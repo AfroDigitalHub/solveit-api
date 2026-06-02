@@ -1,14 +1,23 @@
 const express = require('express');
 const app = express();
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Content-Type');
-  res.header('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
   if (req.method === 'OPTIONS') return res.sendStatus(200);
   next();
+});
+
+app.get('/', (req, res) => {
+  res.json({ status: 'SolveIt API is running!' });
+});
+
+app.get('/api', (req, res) => {
+  res.json({ status: 'SolveIt API is running! Use POST to send requests.' });
 });
 
 app.post('/api', async (req, res) => {
@@ -29,4 +38,4 @@ app.post('/api', async (req, res) => {
   }
 });
 
-app.listen(3000, () => console.log('SolveIt API running!'));
+app.listen(PORT, () => console.log('SolveIt API running on port ' + PORT));
